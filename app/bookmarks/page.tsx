@@ -179,7 +179,7 @@ export default function BookmarksPage() {
   const renderErrorState = () => (
     <div className="flex flex-col items-center justify-center p-8 bg-gray-50 rounded-lg">
       <AlertTriangleIcon className="w-16 h-16 text-red-500 mb-4" />
-      <h2 className="text-xl font-semibold text-gray-700 mb-2">
+      <h2 className="text-xl font-semibold text-muted-foreground mb-2">
         Oops! Something Went Wrong
       </h2>
       <p className="text-gray-500 mb-4">{error}</p>
@@ -197,7 +197,7 @@ export default function BookmarksPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center justify-center mb-8">
         <BookmarkIcon className="w-10 h-10 mr-3 text-blue-600" />
-        <h1 className="text-4xl font-bold text-gray-800">My Bookmarks</h1>
+        <h1 className="text-4xl font-bold text-bg-foreground">My Bookmarks</h1>
       </div>
 
       {/* Content */}
@@ -219,9 +219,9 @@ export default function BookmarksPage() {
                 />
               ))
             ) : (
-              <div className="col-span-4 text-center py-12 bg-gray-50 rounded-lg">
-                <BookmarkIcon className="w-16 h-16 mx-auto mb-4 text-gray-400" />
-                <p className="text-xl text-gray-600">
+              <div className="col-span-4 text-center py-12 bg-border rounded-lg">
+                <BookmarkIcon className="w-16 h-16 mx-auto mb-4 text-foreground" />
+                <p className="text-xl text-muted-foreground">
                   No bookmarks found. Start exploring and save some videos!
                 </p>
               </div>
