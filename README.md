@@ -1,4 +1,4 @@
-# YouTube Searc Bookmarkh App
+# YouTube Searc Bookmark App
 
 ## Project Overview
 
