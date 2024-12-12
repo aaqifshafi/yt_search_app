@@ -95,7 +95,9 @@ export const VideoCard = ({
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Link href={`/watch/${video.id.videoId}`}>
+              <Link
+                href={`https://www.youtube.com/watch?v=${video.id.videoId}`}
+              >
                 <h3 className="font-semibold line-clamp-2 hover:text-primary">
                   {he.decode(video.snippet.title)}
                 </h3>
