@@ -14,7 +14,6 @@ import { BookmarkVideo } from "@/types";
 import { getOrSetSessionId } from "@/lib/cookies";
 import { BookmarkIcon, RefreshCwIcon, AlertTriangleIcon } from "lucide-react";
 
-// Define an interface for the API response
 interface BookmarkApiResponse {
   message?: string;
   bookmarks?: BookmarkVideo[];
@@ -30,19 +29,11 @@ export default function BookmarksPage() {
     new Set()
   );
 
-  // Fetch bookmarks from the API
   const fetchBookmarks = async () => {
     setLoading(true);
     setError(null);
     try {
-      const sessionIdResponse = await getOrSetSessionId();
-      let sessionId = "";
-      if (sessionIdResponse instanceof Response) {
-        const sessionCookie = sessionIdResponse.cookies.get("sessionId");
-        sessionId = sessionCookie ? sessionCookie.value : "";
-      } else {
-        sessionId = sessionIdResponse.sessionId || "";
-      }
+      const { sessionId } = await getOrSetSessionId();
 
       const response = await fetch(`/api/mybookmarks?sessionId=${sessionId}`, {
         method: "GET",
@@ -107,23 +98,17 @@ export default function BookmarksPage() {
   };
 
   // Handle bookmark add/remove
+
   const handleBookmark = async (
     video: BookmarkVideo,
     isBookmarked: boolean
   ) => {
     try {
-      const sessionIdResponse = await getOrSetSessionId();
-      let sessionId = "";
-      if (sessionIdResponse instanceof Response) {
-        const sessionCookie = sessionIdResponse.cookies.get("sessionId");
-        sessionId = sessionCookie ? sessionCookie.value : "";
-      } else {
-        sessionId = sessionIdResponse.sessionId || "";
-      }
+      // Simplified sessionId handling
+      const { sessionId } = await getOrSetSessionId();
 
       let response;
       if (isBookmarked) {
-        // If the video is bookmarked, remove it
         response = await fetch(`/api/bookmark?sessionId=${sessionId}`, {
           method: "DELETE",
           headers: {
@@ -137,11 +122,9 @@ export default function BookmarksPage() {
             newSet.delete(video.id);
             return newSet;
           });
-          // Re-fetch the bookmarks to ensure the list is updated
           fetchBookmarks();
         }
       } else {
-        // If the video is not bookmarked, add it
         response = await fetch(`/api/add-bookmark?sessionId=${sessionId}`, {
           method: "POST",
           headers: {
@@ -158,7 +141,6 @@ export default function BookmarksPage() {
     }
   };
 
-  // Render loading skeleton
   const renderLoadingSkeleton = () => (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       {Array(4)
@@ -175,7 +157,6 @@ export default function BookmarksPage() {
     </div>
   );
 
-  // Render error state
   const renderErrorState = () => (
     <div className="flex flex-col items-center justify-center p-8 bg-gray-50 rounded-lg">
       <AlertTriangleIcon className="w-16 h-16 text-red-500 mb-4" />

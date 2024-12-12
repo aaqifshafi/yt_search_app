@@ -1,3 +1,4 @@
+import { intervalToDuration } from "date-fns";
 export const timeAgo = (dateString: string) => {
   const now = new Date();
   const videoDate = new Date(dateString);
@@ -52,8 +53,9 @@ export const parseISO8601Duration = (duration: string) => {
   const regex = /^PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?$/;
   const match = duration.match(regex);
 
+  // Type guard to ensure 'match' is not null
   if (!match) {
-    throw new Error("Invalid duration format");
+    return "LIVE";
   }
 
   // Extract hours, minutes, and seconds, defaulting to 0 if not provided
@@ -61,14 +63,31 @@ export const parseISO8601Duration = (duration: string) => {
   const minutes = match[2] ? parseInt(match[2], 10) : 0;
   const seconds = match[3] ? parseInt(match[3], 10) : 0;
 
-  // Improved formatting to match YouTube's style
-  if (hours > 0) {
-    return `${hours}:${String(minutes).padStart(2, "0")}:${String(
-      seconds
+  // Calculate total milliseconds from the parsed duration
+  const totalMilliseconds =
+    hours * 3600 * 1000 + minutes * 60 * 1000 + seconds * 1000;
+
+  // Use date-fns to get the duration object
+  const durationObj = intervalToDuration({
+    start: 0,
+    end: totalMilliseconds,
+  });
+
+  // Ensure that we handle undefined values in the durationObj safely by providing default values
+  const {
+    hours: durHours = 0,
+    minutes: durMinutes = 0,
+    seconds: durSeconds = 0,
+  } = durationObj;
+
+  // Improved formatting to match the YouTube style
+  if (durHours > 0) {
+    return `${durHours}:${String(durMinutes).padStart(2, "0")}:${String(
+      durSeconds
     ).padStart(2, "0")}`;
-  } else if (minutes > 0) {
-    return `${minutes}:${String(seconds).padStart(2, "0")}`;
+  } else if (durMinutes > 0) {
+    return `${durMinutes}:${String(durSeconds).padStart(2, "0")}`;
   } else {
-    return `0:${String(seconds).padStart(2, "0")}`;
+    return `0:${String(durSeconds).padStart(2, "0")}`;
   }
 };

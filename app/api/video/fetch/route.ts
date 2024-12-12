@@ -26,7 +26,7 @@ export async function POST(request: Request) {
       const channelUrl = `https://www.googleapis.com/youtube/v3/channels?part=snippet&id=${channelId}&key=${apiKey}`;
       const channelResponse = await axios.get(channelUrl);
       const channel = channelResponse.data.items[0].snippet;
-
+      console.log(contentDetails);
       return {
         ...video,
         contentDetails,

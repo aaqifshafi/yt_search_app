@@ -1,53 +1,61 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation"; // Import usePathname to get current path
+import { usePathname } from "next/navigation";
 import { ModeToggle } from "@/components/ui/modeToggle";
 import { Button } from "@/components/ui/button";
+import { Menu, X } from "lucide-react";
 
 function Header() {
-  const pathname = usePathname(); // Get the current path
-  const [isHome, setIsHome] = useState(false);
-
-  // Set isHome to true when we are on the home route '/'
-  useEffect(() => {
-    if (pathname === "/") {
-      setIsHome(true); // We are on the home page
-    } else if (pathname === "/bookmarks") {
-      setIsHome(false); // We are on the bookmarks page
-    }
-  }, [pathname]);
+  const pathname = usePathname();
+  const [isOpen, setIsOpen] = useState(false);
+  const isHome = pathname === "/";
 
   return (
-    <div className="flex w-full flex-col">
-      <header className="sticky top-0 flex h-16 items-center justify-between gap-4 border-b bg-background px-4 md:px-6">
-        {/* Logo / Title wrapped in a Link component */}
-        <div className="flex items-center space-x-2">
-          <Link href="/" passHref>
-            <h1 className="text-2xl font-semibold cursor-pointer">YT 🔍 🔖</h1>
+    <div className="h-16">
+      <header className="fixed top-0 w-full z-50 bg-background border-b">
+        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+          <Link href="/" className="flex items-center space-x-2">
+            <h1 className="text-2xl font-bold">YT 🔍 🔖</h1>
           </Link>
+
+          <nav className="hidden md:flex items-center space-x-6">
+            <Link href={isHome ? "/bookmarks" : "/"}>
+              <Button variant="ghost" className="text-sm font-medium">
+                {isHome ? "Bookmarks" : "Search"}
+              </Button>
+            </Link>
+            <ModeToggle />
+          </nav>
+
+          <div className="md:hidden flex items-center">
+            <ModeToggle />
+            <Button
+              variant="ghost"
+              size="icon"
+              className="ml-2"
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              {isOpen ? <X size={20} /> : <Menu size={20} />}
+            </Button>
+          </div>
         </div>
 
-        {/* Navigation */}
-        <nav className="hidden gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
-          {/* Conditionally show "Bookmarks" or "Search" based on the current route */}
-          {isHome ? (
-            <Link href="/bookmarks" passHref>
-              <Button variant="link">Bookmarks</Button>
-            </Link>
-          ) : (
-            <Link href="/" passHref>
-              <Button variant="link">Search</Button>
-            </Link>
-          )}
-          <ModeToggle />
-        </nav>
-
-        {/* Mobile Menu (Hamburger, for smaller screens) */}
-        <div className="md:hidden flex items-center space-x-4">
-          <ModeToggle />
-          {/* Add a mobile version of the menu (hamburger, etc.) if needed */}
-        </div>
+        {isOpen && (
+          <div className="border-b md:hidden bg-background">
+            <div className="p-4">
+              <Link href={isHome ? "/bookmarks" : "/"}>
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start text-lg font-medium"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {isHome ? "Bookmarks" : "Search"}
+                </Button>
+              </Link>
+            </div>
+          </div>
+        )}
       </header>
     </div>
   );

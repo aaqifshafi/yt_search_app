@@ -68,7 +68,11 @@ export const VideoCard = ({
       )}
     >
       <CardHeader className="p-0 relative">
-        <Link href={`/watch/${video.id.videoId}`} className="block">
+        <Link
+          href={`https://www.youtube.com/watch?v=${video.id.videoId}`}
+          className="block"
+          target="_blank"
+        >
           <div className="relative aspect-video">
             <Image
               src={video.snippet.thumbnails.high.url}
