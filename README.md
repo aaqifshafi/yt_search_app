@@ -1,8 +1,8 @@
-# YouTube Searc Bookmark App
+# YouTube Search Bookmark App
 
 ## Project Overview
 
-The YouTube Search App is a web application that allows users to search for YouTube videos using the YouTube Data API V3. The application provides a user-friendly interface to input search queries and displays the search results in a structured format.
+The YouTube Search App is a web application that allows users to search for YouTube videos using the YouTube Data API V3. The application provides a user-friendly interface to input search queries and displays the search results in a structured format. Additionally, cookies are used to store the session ID of a user to maintain the session and retrieve Firebase data for that particular session.
 
 ## Features
 
