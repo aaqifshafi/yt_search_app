@@ -2,7 +2,7 @@
 import { NextResponse } from "next/server";
 import { ref, get } from "firebase/database";
 import { db } from "@/lib/firebase";
-import { BookmarkVideo } from "@/types"; // Assuming the BookmarkVideo type is defined
+import { BookmarkVideo } from "@/types";
 
 export async function GET(req: Request) {
   try {
@@ -16,29 +16,23 @@ export async function GET(req: Request) {
       );
     }
 
-    // Reference to the bookmarks node for the specific sessionId
     const bookmarksRef = ref(db, `users/${sessionId}/bookmarks`);
 
-    // Step 3: Get the snapshot of the bookmarks data for this sessionId
     const snapshot = await get(bookmarksRef);
-
     if (!snapshot.exists()) {
       return NextResponse.json({
         message: "No bookmarks found for this session",
       });
     }
 
-    // Step 4: Convert snapshot data into an array (since Firebase returns it as an object)
     const bookmarks = snapshot.val();
 
-    // Type the bookmarks object as a dictionary with string keys and BookmarkVideo values
     const typedBookmarks = bookmarks as { [key: string]: BookmarkVideo };
 
-    // Convert the object to an array of bookmark values and map over it
     const formattedBookmarks = Object.values(typedBookmarks).map(
       (bookmark) => ({
         ...bookmark,
-        id: bookmark.videoId, // Use the videoId as the key or another unique identifier
+        id: bookmark.videoId,
       })
     );
 

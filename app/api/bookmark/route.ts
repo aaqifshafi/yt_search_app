@@ -39,7 +39,6 @@ export async function POST(req: Request) {
     const existingBookmarks = snapshot.val();
 
     if (existingBookmarks) {
-      // Type the existingBookmarks as a dictionary where keys are strings and values are BookmarkVideo
       const isVideoAlreadyBookmarked = Object.values(
         existingBookmarks as { [key: string]: BookmarkVideo }
       ).some((bookmark) => bookmark.videoId === videoId);

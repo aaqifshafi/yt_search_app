@@ -107,7 +107,7 @@ export default function Home() {
       }
 
       const result = await response.json();
-      // Consider using a toast or more subtle notification
+      // TODO - update the video with the bookmarked in toast
       alert(result.message);
     } catch (error) {
       console.error("Bookmark error:", error);
